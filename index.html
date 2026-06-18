@@ -667,35 +667,6 @@ const loader = new THREE.GLTFLoader();
     cityObjects.push(sw);
   }
 
-  // Buildings — procedural grid
-  const buildingColors = [0xcc9966, 0xddbbaa, 0xaaaacc, 0x998877, 0xccccbb, 0xbb9988];
-  const positions = [
-    { x: -50, z: -20 }, { x: -35, z: -22 }, { x: -20, z: -18 },
-    { x: 10, z: -19 }, { x: 25, z: -22 }, { x: 40, z: -20 },
-    { x: -50, z: 20 }, { x: -35, z: 22 }, { x: -20, z: 19 },
-    { x: 10, z: 20 }, { x: 25, z: 22 }, { x: 40, z: 21 },
-    { x: -60, z: -15 }, { x: 55, z: -16 }, { x: -60, z: 15 }, { x: 55, z: 16 },
-  ];
-
-  positions.forEach(pos => {
-    const w = 8 + Math.random() * 10;
-    const d = 8 + Math.random() * 10;
-    const h = 6 + Math.random() * 20;
-    const geo = new THREE.BoxGeometry(w, h, d);
-    const mat = new THREE.MeshLambertMaterial({
-      color: buildingColors[Math.floor(Math.random() * buildingColors.length)]
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set(pos.x, h / 2, pos.z);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    scene.add(mesh);
-    cityObjects.push(mesh);
-
-    // Windows
-    addWindows(mesh, w, h, d);
-  });
-
   // Traffic lights at intersection
   spawnTrafficLight(6, 6);
   spawnTrafficLight(-6, 6);
