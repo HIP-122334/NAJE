@@ -502,7 +502,7 @@
 
 <!-- THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js"></script>
 <script>
 // ═══════════════════════════════════════════════
 //  GAME STATE
@@ -595,7 +595,26 @@ function buildCity(locationKey) {
   // Clear
   cityObjects.forEach(o => scene.remove(o));
   cityObjects.length = 0;
-
+const loader = new THREE.GLTFLoader();
+  loader.load(
+    'city.glb',
+    function(gltf) {
+      const model = gltf.scene;
+      model.scale.set(0.05, 0.05, 0.05);
+      model.position.set(0, 0, 0);
+      model.traverse(child => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+      scene.add(model);
+      cityObjects.push(model);
+    },
+    xhr => console.log('טוען: ' + Math.round(xhr.loaded/xhr.total*100) + '%'),
+    err => console.error('שגיאה בטעינה:', err)
+  );
+  
   // Ground
   const groundGeo = new THREE.PlaneGeometry(200, 200);
   const groundMat = new THREE.MeshLambertMaterial({ color: 0x3a7a3a });
